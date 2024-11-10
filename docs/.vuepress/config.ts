@@ -1,6 +1,10 @@
 import { viteBundler } from '@vuepress/bundler-vite'
 import { defineUserConfig } from 'vuepress'
 import { plumeTheme } from 'vuepress-theme-plume'
+import { path } from 'vuepress/utils'
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export default defineUserConfig({
   base: '/Velvet-Blog/',
@@ -9,8 +13,13 @@ export default defineUserConfig({
   description: 'Test',
   bundler: viteBundler(),
   head: [
-    ['link', { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png' }],
+    ['link', { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/Velvet-Blog/favicon-32x32.png' }],
   ],
+  alias: {
+    '@theme/VPBackToTop.vue': path.resolve(
+      __dirname,
+      './components/MyBackToTop.vue',
+    ),},
   theme: plumeTheme({
     // 添加您的部署域名
     // hostname: 'https://your_site_url',
