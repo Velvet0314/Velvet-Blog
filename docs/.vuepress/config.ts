@@ -85,16 +85,16 @@ export default defineUserConfig({
        * 评论 comments
        * @see https://theme-plume.vuejs.press/guide/features/comments/
        */
-      // comment: {
-      //   provider: '', // "Artalk" | "Giscus" | "Twikoo" | "Waline"
-      //   comment: true,
-      //   repo: '',
-      //   repoId: '',
-      //   categoryId: '',
-      //   mapping: 'pathname',
-      //   reactionsEnabled: true,
-      //   inputPosition: 'top',
-      // },
+      comment: {
+        provider: 'Giscus', // "Artalk" | "Twikoo" | "Waline"
+        comment: true,
+        repo: 'Velvet0314/Velvet-Blog',
+        repoId: 'R_kgDONNA0PQ',
+        categoryId: 'DIC_kwDONNA0Pc4CkI6C',
+        mapping: 'pathname',
+        reactionsEnabled: true,
+        inputPosition: 'top',
+      },
     },
   }),
 })

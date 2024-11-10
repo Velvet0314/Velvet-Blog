@@ -4,6 +4,7 @@ createTime: 2024/11/08 10:24:10
 permalink: /ML/第十二章 ICA 独立成分分析/
 contributors: Velvet
 lastUpdated: true
+comments: true
 ---
 
 在这一章节中，我们将学习 **独立成分分析（Independent Components Analysis）**。与主成分分析（PCA）相似，这将为我们提供一种新的数据表示方式。然而，ICA 的目标却与 PCA 有很大不同。

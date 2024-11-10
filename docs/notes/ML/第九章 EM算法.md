@@ -4,6 +4,7 @@ createTime: 2024/11/07 09:31:39
 permalink: /ML/第九章 EM算法/
 contributors: Velvet
 lastUpdated: true
+comments: true
 ---
 
 在这一个章节里，我们会学习 EM 算法及其推广和应用。

@@ -4,6 +4,7 @@ createTime: 2024/11/08 10:19:22
 permalink: /ML/第十一章 PCA 主成分分析/
 contributors: Velvet
 lastUpdated: true
+comments: true
 ---
 
 在这一个章节里，我们会学习到如何去测试训练的模型，以及去修正模型的误差。
