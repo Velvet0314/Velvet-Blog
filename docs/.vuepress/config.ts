@@ -29,9 +29,9 @@ export default defineUserConfig({
       mode: 'block',
       info: [
         {
-          username: '李青阳',
+          username: 'Velvet0314',
           name: 'Velvet',
-          alias: ['Velvet0314'],
+          alias: ['李青阳'],
           avatar: 'https://s21.ax1x.com/2024/11/10/pA629aj.jpg',
           url: 'https://github.com/Velvet0314'
         }
