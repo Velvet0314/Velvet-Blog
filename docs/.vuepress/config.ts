@@ -31,6 +31,7 @@ export default defineUserConfig({
         {
           username: '李青阳',
           name: 'Velvet', // github username
+          alias: 'Velvet0314',
           avatar: 'https://s21.ax1x.com/2024/11/10/pA629aj.jpg'
         }
       ]
@@ -90,10 +91,14 @@ export default defineUserConfig({
         comment: true,
         repo: 'Velvet0314/Velvet-Blog',
         repoId: 'R_kgDONNA0PQ',
+        category: 'Q&A',
         categoryId: 'DIC_kwDONNA0Pc4CkI6C',
         mapping: 'pathname',
         reactionsEnabled: true,
         inputPosition: 'top',
+        lazyLoading: true,
+        lightTheme: 'light',
+        darkTheme: 'dark'
       },
     },
   }),
