@@ -3,11 +3,10 @@ import { defineUserConfig } from 'vuepress'
 import { plumeTheme } from 'vuepress-theme-plume'
 
 export default defineUserConfig({
-  base: '/',
+  base: '/Velvet-Blog/',
   lang: 'zh-CN',
   title: 'Velvet-Notes',
   description: 'Test',
-
   bundler: viteBundler(),
 
   theme: plumeTheme({
