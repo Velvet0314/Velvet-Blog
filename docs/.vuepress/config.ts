@@ -15,6 +15,7 @@ export default defineUserConfig({
   head: [
     ['link', { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png' }],
   ],
+
   alias: {
     '@theme/VPBackToTop.vue': path.resolve(
       __dirname,
@@ -23,6 +24,17 @@ export default defineUserConfig({
   theme: plumeTheme({
     // 添加您的部署域名
     hostname: 'https://velvet-notes.org/',
+
+    contributors: {
+      mode: 'block',
+      info: [
+        {
+          username: '李青阳',
+          name: 'Velvet', // github username
+          avatar: 'https://s21.ax1x.com/2024/11/10/pA629aj.jpg'
+        }
+      ]
+    }, 
 
     plugins: {
       /**

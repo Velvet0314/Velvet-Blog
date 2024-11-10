@@ -11,7 +11,6 @@ export default defineThemeConfig({
   docsRepo: 'https://github.com/Velvet0314/Velvet-Blog',
   docsDir: 'docs',
   appearance: true,
-  outline: [2,4],
   footer: { copyright: 'Copyright © 2024-present Velvet' },
   // transition: {appearance: false},
 
