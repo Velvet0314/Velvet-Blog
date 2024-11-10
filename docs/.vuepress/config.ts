@@ -8,7 +8,9 @@ export default defineUserConfig({
   title: 'Velvet-Notes',
   description: 'Test',
   bundler: viteBundler(),
-
+  head: [
+    ['link', { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png' }],
+  ],
   theme: plumeTheme({
     // 添加您的部署域名
     // hostname: 'https://your_site_url',

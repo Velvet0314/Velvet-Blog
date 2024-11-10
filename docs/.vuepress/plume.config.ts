@@ -16,7 +16,7 @@ export default defineThemeConfig({
   // transition: {appearance: false},
 
   profile: {
-    avatar: 'https://s21.ax1x.com/2024/11/09/pA6tF8s.jpg',
+    avatar: 'https://s21.ax1x.com/2024/11/10/pA629aj.jpg',
     name: 'Velvet',
     description: '血潮如铁，心似琉璃',
     // circle: true,
