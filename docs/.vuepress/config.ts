@@ -7,7 +7,7 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export default defineUserConfig({
-  base: '/Velvet-Blog/',
+  base: '/',
   lang: 'zh-CN',
   title: 'Velvet-Notes',
   description: 'Test',
