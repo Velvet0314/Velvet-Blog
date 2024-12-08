@@ -38,7 +38,18 @@ export const navbar = defineNavbarConfig([
             activeMatch: '^/ML/',
             icon: "icon-park-solid:notebook"
           }
-        ]  
+        ],
+      },
+      { 
+        text: "计算机基础",
+        items:[
+          {
+            text: "浙江大学第2版 数据结构",
+            link: "/DS/",
+            activeMatch: '^/DS/',
+            icon: "bxs:tree"
+          }
+        ],
       },
     ],
   },
