@@ -11,11 +11,11 @@ permalink: /projects/targetdiff
 
 李青阳：TargetDiff论文阅读一遍+TargetDiff代码阅读
 
-	1. 训练部分代码 `train_diffusion.py`
-	2. 主要模型代码 `molopt_score_model.py` —— 算法部分对应的代码 
-	3. 数据输入代码 `transform.py`
-	4. 评估指标  `evaluation_diifusion.py`
-	5. 能够进行模型训练、单步调试
+1. 训练部分代码 `train_diffusion.py`
+2. 主要模型代码 `molopt_score_model.py` —— 算法部分对应的代码 
+3. 数据输入代码 `transform.py`
+4. 评估指标  `evaluation_diifusion.py`
+5. 能够进行模型训练、单步调试
 
 王琪皓：深度学习课程 —— softmax回归
 
@@ -308,6 +308,40 @@ permalink: /projects/targetdiff
 ### 验证流程
 
 还有待书写中...
+
+## 有关 WSL 的网络代理
+
+由于 WSL 默认使用 NAT 网络模式：`检测到 localhost 代理配置，但未镜像到 WSL。NAT 模式下的 WSL 不支持 localhost 代理`，为了在 WSL 中使用代理以完成某些操作，需要对 WSL 进行一些配置。
+
+在 Windows `%USERFILE%`目录下，新建 `.wslconfig` 配置文件，并加入以下配置：
+
+```ini
+[wsl2]                      # 核心配置
+autoProxy=true            	# 是否强制 WSL2/WSLg 子系统使用 Windows 代理设置（请根据实际需要启用）
+dnsTunneling=true          	# WSL2/WSLg DNS 代理隧道，以便由 Windows 代理转发 DNS 请求（请根据实际需要启用）
+firewall=true               # WSL2/WSLg 子系统的 Windows 防火墙集成，以便 Hyper-V 或者 Windows 筛选平台（WFP）能过滤子系统流量（请根据实际需要启用）
+guiApplications=true        # 启用 WSLg GUI 图形化程序支持
+ipv6=true                   # 启用 IPv6 网络支持
+# localhostForwarding=true  # 启用 localhost 网络转发支持（新版已不支持在 mirrored 模式下使用，会自动忽略，所以无需注释掉，只是启用会有条烦人的警告而已）
+# memory=4GB                # 限制 WSL2/WSLg 子系统的最大内存占用
+# processors=8              # 设置 WSL2/WSLg 子系统的逻辑 CPU 核心数为 8（最大肯定没法超过硬件的物理逻辑核心数）
+# pageReporting=true        # 启用 WSL2/WSLg 子系统页面文件通报，以便 Windows 回收已分配但未使用的内存
+nestedVirtualization=true   # 启用 WSL2/WSLg 子系统嵌套虚拟化功能支持
+networkingMode=mirrored     # 启用镜像网络特性支持
+vmIdleTimeout=-1            # WSL2 VM 实例空闲超时关闭时间，-1 为永不关闭，根据参数说明，目前似乎仅适用于 Win11+
+
+[experimental]                  # 实验性功能（按照过往经验，若后续转正，则是配置在上面的 [wsl2] 选节）
+autoMemoryReclaim=gradual       # 启用空闲内存自动缓慢回收，其它选项：dropcache / disabled（立即/禁用）
+hostAddressLoopback=true        # 启用 WSL2/WSLg 子系统和 Windows 宿主之间的本地回环互通支持
+sparseVhd=true                  # 启用 WSL2/WSLg 子系统虚拟硬盘空间自动回收
+bestEffortDnsParsing=true       # 和 dnsTunneling 配合使用，Windows 将从 DNS 请求中提取问题并尝试解决该问题，从而忽略未知记录（请根据实际需要启用）
+#useWindowsDnsCache=false       # 和 dnsTunneling 配合使用，决定是否使用 Windows DNS 缓存池（新版已移除此实验性功能，未能转正）
+#ignoredPorts=3306              # 见：https://learn.microsoft.com/zh-cn/windows/wsl/wsl-config#experimental-settings
+```
+
+完成后重启 Windows 使得改动生效
+
+设置成功后在有代理时启动 WSL 将不再有提示信息，同时执行 `curl -I https://www/google.com` 会返回 `200` code。 
 
 ## 有关 WSL 与 SSH
 

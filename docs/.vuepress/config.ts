@@ -44,7 +44,7 @@ export default defineUserConfig({
        * @see https://theme-plume.vuejs.press/config/plugins/code-highlight/
        */
       shiki: {
-        languages: ['c','c++'],
+        languages: ['c','c++','python','bash','ini'],
         theme: { light: 'solarized-light', dark: 'solarized-dark'}
       },
 
