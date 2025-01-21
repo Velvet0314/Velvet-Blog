@@ -10,12 +10,12 @@ permalink: /projects/targetdiff
 ## 项目进度
 
 李青阳：TargetDiff论文阅读一遍+TargetDiff代码阅读
-
 1. 训练部分代码 `train_diffusion.py`
 2. 主要模型代码 `molopt_score_model.py` —— 算法部分对应的代码 
 3. 数据输入代码 `transform.py`
 4. 评估指标  `evaluation_diifusion.py`
 5. 能够进行模型训练、单步调试
+6. 基本完成了TargetDiff的代码阅读 —— 训练流程 + 采样流程 + 评估流程 + 评估指标
 
 王琪皓：深度学习课程 —— softmax回归
 
@@ -23,9 +23,8 @@ permalink: /projects/targetdiff
 
 ## 后期规划
 
-进度提速
-- 预计是先快速完成TargetDiff的代码阅读和实验
-- 然后进行24ICLR Protein-Ligand Interaction Prior for Binding-aware 3D Molecule Diffusion Models的代码阅读和实验
+- [x] TargetDiff 代码阅读
+- [ ] ⭐进行24ICLR Protein-Ligand Interaction Prior for Binding-aware 3D Molecule Diffusion Models的代码阅读和实验
 
 ## TargetDiff 的目的
 
@@ -68,7 +67,7 @@ permalink: /projects/targetdiff
 	- 均方误差 MSE：度量原子坐标的偏差
 	- KL 散度（KL-divergence）：度量类型分布的差异
 8. 更新参数： 最小化损失函数 $L$  来更新模型参数 $\theta$
-![[train_algorithm.png]]
+
 ### TargetDiff 在干什么 —— 采样算法流程
 
 1. 输入：蛋白质结合位点（binding site）$\mathcal{P}$ 与 训练好的模型 $\phi_\theta$
@@ -82,7 +81,7 @@ permalink: /projects/targetdiff
 6. 预测：$[\hat{x}_0,\hat{v}_0]=\phi_\theta([xt, vt], t, \mathcal{P})$ ，预测扰动位置和类型，即 $\hat{x}_0$  和 $\hat{v}_0$ ，条件是当前的 $x_t$、$v_t$、时间步 $t$ 和蛋白质信息 $\mathcal{P}$
 7. 根据后验分布 $p_\theta(x_{t-1} | x_t, \hat{x}_0)$ 对原子位置 $\mathbf{x}_{t-1}$进行采样
 8. 根据后验分布 $p_\theta(v_{t-1} | v_t, \hat{v}_0)$ 对原子类型 $\mathbf{v}_{t-1}$ 进行采样
-![[sample_algorithm.png]]
+
 
 ## TargetDiff 代码
 
@@ -305,104 +304,188 @@ permalink: /projects/targetdiff
 		pos_traj.append(ori_ligand_pos.clone().cpu())
 	    v_traj.append(ligand_v.clone().cpu())
 		```
-### 验证流程
+### 评估流程
 
-还有待书写中...
+主要在`evaluate_diffusion.py` 和 `evaluate_from_meta.py` 中
 
-## 有关 WSL 的网络代理
+评估流程整体上就是对一些指标进行计算来衡量生成分子的好坏
 
-由于 WSL 默认使用 NAT 网络模式：`检测到 localhost 代理配置，但未镜像到 WSL。NAT 模式下的 WSL 不支持 localhost 代理`，为了在 WSL 中使用代理以完成某些操作，需要对 WSL 进行一些配置。
+#### Jensen-Shannon divergence between the distributions of bond distance
 
-在 Windows `%USERFILE%`目录下，新建 `.wslconfig` 配置文件，并加入以下配置：
+主要在 `eval_bond_length.py` 中
 
-```ini
-[wsl2]                      # 核心配置
-autoProxy=true            	# 是否强制 WSL2/WSLg 子系统使用 Windows 代理设置（请根据实际需要启用）
-dnsTunneling=true          	# WSL2/WSLg DNS 代理隧道，以便由 Windows 代理转发 DNS 请求（请根据实际需要启用）
-firewall=true               # WSL2/WSLg 子系统的 Windows 防火墙集成，以便 Hyper-V 或者 Windows 筛选平台（WFP）能过滤子系统流量（请根据实际需要启用）
-guiApplications=true        # 启用 WSLg GUI 图形化程序支持
-ipv6=true                   # 启用 IPv6 网络支持
-# localhostForwarding=true  # 启用 localhost 网络转发支持（新版已不支持在 mirrored 模式下使用，会自动忽略，所以无需注释掉，只是启用会有条烦人的警告而已）
-# memory=4GB                # 限制 WSL2/WSLg 子系统的最大内存占用
-# processors=8              # 设置 WSL2/WSLg 子系统的逻辑 CPU 核心数为 8（最大肯定没法超过硬件的物理逻辑核心数）
-# pageReporting=true        # 启用 WSL2/WSLg 子系统页面文件通报，以便 Windows 回收已分配但未使用的内存
-nestedVirtualization=true   # 启用 WSL2/WSLg 子系统嵌套虚拟化功能支持
-networkingMode=mirrored     # 启用镜像网络特性支持
-vmIdleTimeout=-1            # WSL2 VM 实例空闲超时关闭时间，-1 为永不关闭，根据参数说明，目前似乎仅适用于 Win11+
-
-[experimental]                  # 实验性功能（按照过往经验，若后续转正，则是配置在上面的 [wsl2] 选节）
-autoMemoryReclaim=gradual       # 启用空闲内存自动缓慢回收，其它选项：dropcache / disabled（立即/禁用）
-hostAddressLoopback=true        # 启用 WSL2/WSLg 子系统和 Windows 宿主之间的本地回环互通支持
-sparseVhd=true                  # 启用 WSL2/WSLg 子系统虚拟硬盘空间自动回收
-bestEffortDnsParsing=true       # 和 dnsTunneling 配合使用，Windows 将从 DNS 请求中提取问题并尝试解决该问题，从而忽略未知记录（请根据实际需要启用）
-#useWindowsDnsCache=false       # 和 dnsTunneling 配合使用，决定是否使用 Windows DNS 缓存池（新版已移除此实验性功能，未能转正）
-#ignoredPorts=3306              # 见：https://learn.microsoft.com/zh-cn/windows/wsl/wsl-config#experimental-settings
+```python
+def bond_distance_from_mol(mol):
+	   pos = mol.GetConformer().GetPositions()
+	pdist = pos[None, :] - pos[:, None]
+	pdist = np.sqrt(np.sum(pdist ** 2, axis=-1))
+	all_distances = []
+	
+	for bond in mol.GetBonds():
+		s_sym = bond.GetBeginAtom().GetAtomicNum()
+		e_sym = bond.GetEndAtom().GetAtomicNum()
+		s_idx, e_idx = bond.GetBeginAtomIdx(), bond.GetEndAtomIdx()
+		bond_type = utils_data.BOND_TYPES[bond.GetBondType()]
+		distance = pdist[s_idx, e_idx]
+		all_distances.append(((s_sym, e_sym, bond_type), distance))
+	return all_distances
 ```
 
-完成后重启 Windows 使得改动生效
+#### Distribution for distances of all atom and carbon-carbon pairs
 
-设置成功后在有代理时启动 WSL 将不再有提示信息，同时执行 `curl -I https://www/google.com` 会返回 `200` code。 
+主要在 `eval_bond_length.py` 中
 
-## 有关 WSL 与 SSH
+```python
+c_bond_length_profile = eval_bond_length.get_bond_length_profile(all_bond_dist)
+c_bond_length_dict = eval_bond_length.eval_bond_length_profile(c_bond_length_profile)
+logger.info('JS bond distances of complete mols: ')
+print_dict(c_bond_length_dict, logger)
 
-通过 SSH 远程访问 WSL 实现远程办公
+success_pair_length_profile = eval_bond_length.get_pair_length_profile(success_pair_dist)
 
-1. Zerotier 内网穿透
+success_js_metrics = eval_bond_length.eval_pair_length_profile(success_pair_length_profile)
+print_dict(success_js_metrics, logger)
 
-	- 在 WSL 中下载 Zerotier，并启动服务
-	```bash
-	sudo systemctl enable zerotier-one
-	sudo systemctl start zerotier-one
-	```
-	- 加入 Zerotier 的网络
-	```bash
-	sudo zerotier-cli join <your-network-id>
-	```
-	- 查看 Zerotier 状态
-	```bash
-	sudo zerotier-cli status
-	```
-	- 找到当前为 WSL 分配的虚拟地址
-	```bash
-	sudo zerotier-cli listnetworks
-	```
-2. SSH 服务配置
+atom_type_js = eval_atom_type.eval_atom_type_distribution(success_atom_types)
+logger.info('Atom type JS: %.4f' % atom_type_js)
+...
+def eval_bond_length_profile(bond_length_profile: BondLengthProfile) -> Dict[str, Optional[float]]:
+	metrics = {}
+	
+	# Jensen-Shannon distances
+	for bond_type, gt_distribution in eval_bond_length_config.EMPIRICAL_DISTRIBUTIONS.items():
+		if bond_type not in bond_length_profile:
+			metrics[f'JSD_{_bond_type_str(bond_type)}'] = None
+		else:
+			metrics[f'JSD_{_bond_type_str(bond_type)}'] = sci_spatial.distance.jensenshannon(gt_distribution,                                                bond_length_profile[bond_type])
+	return metrics
 
-	- 下载并启动 SSH 服务
-	```bash
-	sudo service ssh start
-	```
-	- 检查 SSH 服务状态
-	```bash
-	sudo service ssh status
-	```
-3. 修改 SSH 配置
+def eval_pair_length_profile(pair_length_profile):
+	metrics = {}
+	
+	for k, gt_distribution in eval_bond_length_config.PAIR_EMPIRICAL_DISTRIBUTIONS.items():
+		if k not in pair_length_profile:
+			metrics[f'JSD_{k}'] = None
+		else:
+			metrics[f'JSD_{k}'] = sci_spatial.distance.jensenshannon(gt_distribution, pair_length_profile[k])
+	return metrics
 
-	- 进入配置文件 `/etc/ssh/sshd_config`
-	```bash
-	sudo nano /etc/ssh/sshd_config
+def eval_atom_type_distribution(pred_counter: Counter):
+	total_num_atoms = sum(pred_counter.values())
+	pred_atom_distribution = {}
+	for k in ATOM_TYPE_DISTRIBUTION:
+		pred_atom_distribution[k] = pred_counter[k] / total_num_atoms
+	# print('pred atom distribution: ', pred_atom_distribution)
+	# print('ref  atom distribution: ', ATOM_TYPE_DISTRIBUTION)
+	js = sci_spatial.distance.jensenshannon(np.array(list(ATOM_TYPE_DISTRIBUTION.values())),
+												np.array(list(pred_atom_distribution.values())))
+	return js
+```
+
+#### Percentage of different ring sizes
+
+主要在 `evaluate_diffusion.py` 中
+```python
+def print_ring_ratio(all_ring_sizes, logger):
+	for ring_size in range(3, 10):
+		n_mol = 0
+		for counter in all_ring_sizes:
+			if ring_size in counter:
+				n_mol += 1
+		logger.info(f'ring size: {ring_size} ratio: {n_mol / len(all_ring_sizes):.3f}')
+
+# check ring distribution
+print_ring_ratio([r['chem_results']['ring_size'] for r in results], logger)
+```
+
+#### High Affinity
+
+主要在 `docking_vina.py`.  和 `docking_qvina.py` 中
+
+##### `docking_mode` 的选择
+- `evaluation_from_meta.py`
+	`docking_mode` 是默认的 `vina_full` 模式：
+	```python
+	parser.add_argument('--docking_mode', type=str, default='vina_full',
+						choices=['none', 'qvina', 'vina', 'vina_full', 'vina_score'])
 	```
-	- 修改如下参数
-	```bash
-	Port 22 # 转发端口
-	PermitRootLogin prohibit-password # 允许 root 用户登录
-	AllowUsers <user_name> # 允许一般用户登录
-	PasswordAuthentocation yes # 启用远程登录密码
-	PermitUserEnvironment yes # 允许用户环境
+- `evaluation_diffusion.py`
+	取决于命令行里的参数：
+	```python
+	parser.add_argument('--docking_mode', type=str, default='vina_full',
+						choices=['qvina', 'vina_score', 'vina_dock', 'none'])
 	```
-	- 重新启动 SSH 服务
+	
+	参考的命令行：
 	```bash
-	sudo systemctl restart sshd
-	sudo service ssh restart
+	python scripts/evaluate_diffusion.py {OUTPUT_DIR} --docking_mode vina_score --protein_root data/test_set
 	```
-4. 在 VSCode 中建立 Remote-SSH 连接
-	- 用户名为 WSL 的用户名
-	- 密码为 sudo 密码
+
+##### Affinity 的计算
+```python
+	def run(self, mode='dock', exhaustiveness=8, **kwargs):
+		
+	ligand_pdbqt = self.ligand_path[:-4] + '.pdbqt'
+	protein_pqr = self.receptor_path[:-4] + '.pqr'
+	protein_pdbqt = self.receptor_path[:-4] + '.pdbqt'
+	
+	lig = PrepLig(self.ligand_path, 'sdf')
+	lig.get_pdbqt(ligand_pdbqt)
+	
+	prot = PrepProt(self.receptor_path)
+	
+	if not os.path.exists(protein_pqr):
+		prot.addH(protein_pqr)
+		
+	if not os.path.exists(protein_pdbqt):
+		prot.get_pdbqt(protein_pdbqt)
+    
+	dock = VinaDock(ligand_pdbqt, protein_pdbqt)
+	dock.pocket_center, dock.box_size = self.center, [self.size_x, self.size_y, self.size_z]
+	score, pose = dock.dock(score_func='vina', mode=mode, exhaustiveness=exhaustiveness, save_pose=True, **kwargs)
+	return [{'affinity': score, 'pose': pose}]
+```
+#### Diversity
+
+TargetDiff 中无该部分代码，但是单独给出一个用于计算 Diversity 的标准代码
+
+```python
+def tanimoto_sim(mol, ref):
+	fp1 = Chem.RDKFingerprint(ref)
+	fp2 = Chem.RDKFingerprint(mol)
+	return DataStructs.TanimotoSimilarity(fp1,fp2)
+	
+def calc_pairwise_sim(mols):
+	n = len(mols)
+	sims = []
+	 for i in range(n):
+		for j in range(i + 1, n):
+			sims.append(tanimoto_sim(mols[i], mols[j]))
+	return np.array(sims)
+	
+def computer_diversity(mols):
+	div_all = []
+	# for result in tqdm(results):
+	div_all.append(np.mean(1 - calc_pairwise_sim(mols)))
+	div_all = np.array(div_all)
+	div_all = div_all[~np.isnan(div_all)]
+	return div_all
+...
+for ligand_filename, smiles_list in protein_ligand_dict.items():
+	diversity = computer_diversity(smiles_list)
+	protein_diversities.append(diversity)
+	print(f"{ligand_filename} 的diversity: {diversity}")
+print(len(protein_ligand_dict))
+
+mean_diversity = np.mean(protein_diversities)
+median_diversity = np.median(protein_diversities)
+```
+
+## TargetDiff 数学推导
+
 ## 一些疑问
 
 1. 什么是蛋白质口袋？
 	蛋白质口袋指的是蛋白质表面或内部的**三维结构凹陷区域**，该区域通常是其他分子（如配体、小分子药物或离子）与蛋白质发生结合或相互作用的地方。
 2. 代码
 3. 数学推导
-
-
