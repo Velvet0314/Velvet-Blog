@@ -24,7 +24,7 @@ permalink: /projects/targetdiff
 ## 后期规划
 
 - [x] TargetDiff 代码阅读
-- [ ] ⭐进行24ICLR Protein-Ligand Interaction Prior for Binding-aware 3D Molecule Diffusion Models的代码阅读和实验
+- [x] ⭐进行24ICLR Protein-Ligand Interaction Prior for Binding-aware 3D Molecule Diffusion Models的代码阅读和实验
 
 ## TargetDiff 的目的
 
@@ -53,7 +53,7 @@ permalink: /projects/targetdiff
 - **反向去噪过程（Reverse Denoising Process）**
 	- 从纯噪声开始，逐步去噪，恢复出想要的目标数据
 
-### TargetDiff 在干什么 —— 训练算法流程
+### TargetDiff 训练算法流程
 
 1. 输入：蛋白质-配体的结合数据集
 2. 扩散条件初始化：采样时间步 —— 从均匀分布 $U(0, \dots, T)$ 中采样扩散时间 $t$
@@ -68,7 +68,7 @@ permalink: /projects/targetdiff
 	- KL 散度（KL-divergence）：度量类型分布的差异
 8. 更新参数： 最小化损失函数 $L$  来更新模型参数 $\theta$
 
-### TargetDiff 在干什么 —— 采样算法流程
+### TargetDiff 采样算法流程
 
 1. 输入：蛋白质结合位点（binding site）$\mathcal{P}$ 与 训练好的模型 $\phi_\theta$
 2. 输出：由模型生成的能与蛋白质口袋结合的配体分子 $\mathcal{M}$
@@ -85,7 +85,9 @@ permalink: /projects/targetdiff
 
 ## TargetDiff 代码
 
-### 代码解读：[Velvet0314/targetdiff at 4LearnOnly](https://github.com/Velvet0314/targetdiff/tree/4LearnOnly)
+### 代码解读
+
+[Velvet0314/targetdiff at 4LearnOnly](https://github.com/Velvet0314/targetdiff/tree/4LearnOnly)
 
 ### 环境安装 Tips
 
