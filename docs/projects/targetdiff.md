@@ -55,33 +55,61 @@ permalink: /projects/targetdiff
 
 ### TargetDiff 训练算法流程
 
+:::: steps
 1. 输入：蛋白质-配体的结合数据集
+
 2. 扩散条件初始化：采样时间步 —— 从均匀分布 $U(0, \dots, T)$ 中采样扩散时间 $t$
+
 3. 预处理：将蛋白质原子的质心移动到原点，以对齐配体和蛋白质的位置，确保数据在空间上的一致性
+
 4. 加噪：网络中主要是针对 位置 $x$ 和 原子类型 $v$ 进行扰动，逐步加噪
 	- $x_t = \sqrt{\bar{\alpha}_t} x_0 + (1 - \bar{\alpha}_t) \epsilon$，其中 $\epsilon$  是从正态分布 $\mathcal{N}(0, I)$  中采样的噪声
 	- $$\begin{align}log \mathbf{c} &= \log \left( \bar{\alpha}_t \mathbf{v}_0 + \frac{(1 - \bar{\alpha}_t)}{K} \right) \\ \mathbf{v}_t &= \text{one\_hot} \left( \arg \max_i [g_i + \log c_i] \right), \text{ where } g \sim \text{Gumbel}(0, 1)\end{align}$$
 5. 预测：$[\hat{x}_0,\hat{v}_0]=\phi_\theta([xt, vt], t, \mathcal{P})$ ，预测扰动位置和类型，即 $\hat{x}_0$  和 $\hat{v}_0$ ，条件是当前的 $x_t$、$v_t$、时间步 $t$ 和蛋白质信息 $\mathcal{P}$
+
 6. 计算后验类型分布：根据公式计算原子类型的后验分布 $c(v_t, v_0)$ 和 $c(v_t, \hat{v}_0)$
+
 7. 损失函数：
 	- 均方误差 MSE：度量原子坐标的偏差
 	- KL 散度（KL-divergence）：度量类型分布的差异
+
 8. 更新参数： 最小化损失函数 $L$  来更新模型参数 $\theta$
+::::
+
+<ImageCard
+	image="https://s21.ax1x.com/2025/03/19/pEweOyQ.png"
+	width=85%
+	center=true
+/>
 
 ### TargetDiff 采样算法流程
 
+:::: steps
 1. 输入：蛋白质结合位点（binding site）$\mathcal{P}$ 与 训练好的模型 $\phi_\theta$
-2. 输出：由模型生成的能与蛋白质口袋结合的配体分子 $\mathcal{M}$
-3. 确定原子数量：基于口袋大小，从一个先验分布中采样一个生成的配体分子的原子数量
-4. 预处理：移动蛋白质原子的质心至坐标原点，使位置标准化，以确保生成的配体与蛋白质结合位点对齐
-5. 初始化：采样一个初始的原子坐标（coordinates）$\mathbf{x}_T$ 和 原子类型 $\mathbf{v}_T$
-	- $\mathbf{x}_T \in \mathcal{N}(0,\boldsymbol{I})$ —— 从标准正态分布 $\mathcal{N}(0,\boldsymbol{I})$ 中采样
-	- $\mathbf{v}_T = \text{one\_hot} \left( \arg \max_i g_i \right), \text{ where } g \sim \text{Gumbel}(0, 1)$
-- $\textbf{for}\ t\ \text{in}\ T,T-1,\cdots,1\ \textbf{do}$ （反向去噪）
-6. 预测：$[\hat{x}_0,\hat{v}_0]=\phi_\theta([xt, vt], t, \mathcal{P})$ ，预测扰动位置和类型，即 $\hat{x}_0$  和 $\hat{v}_0$ ，条件是当前的 $x_t$、$v_t$、时间步 $t$ 和蛋白质信息 $\mathcal{P}$
-7. 根据后验分布 $p_\theta(x_{t-1} | x_t, \hat{x}_0)$ 对原子位置 $\mathbf{x}_{t-1}$进行采样
-8. 根据后验分布 $p_\theta(v_{t-1} | v_t, \hat{v}_0)$ 对原子类型 $\mathbf{v}_{t-1}$ 进行采样
 
+2. 输出：由模型生成的能与蛋白质口袋结合的配体分子 $\mathcal{M}$
+
+3. 确定原子数量：基于口袋大小，从一个先验分布中采样一个生成的配体分子的原子数量
+
+4. 预处理：移动蛋白质原子的质心至坐标原点，使位置标准化，以确保生成的配体与蛋白质结合位点对齐
+
+5. 初始化：采样一个初始的原子坐标（coordinates）$\mathbf{x}_T$ 和 原子类型 $\mathbf{v}_T$
+   - $\mathbf{x}_T \in \mathcal{N}(0,\boldsymbol{I})$ —— 从标准正态分布 $\mathcal{N}(0,\boldsymbol{I})$ 中采样
+   - $\mathbf{v}_T = \text{one\_hot} \left( \arg \max_i g_i \right), \text{ where } g \sim \text{Gumbel}(0, 1)$
+   - $\textbf{for}\ t\ \text{in}\ T,T-1,\cdots,1\ \textbf{do}$ （反向去噪）
+  
+6. 预测：$[\hat{x}_0,\hat{v}_0]=\phi_\theta([xt, vt], t, \mathcal{P})$ ，预测扰动位置和类型，即 $\hat{x}_0$  和 $\hat{v}_0$ ，条件是当前的 $x_t$、$v_t$、时间步 $t$ 和蛋白质信息 $\mathcal{P}$
+
+7. 根据后验分布 $p_\theta(x_{t-1} | x_t, \hat{x}_0)$ 对原子位置 $\mathbf{x}_{t-1}$进行采样
+
+8. 根据后验分布 $p_\theta(v_{t-1} | v_t, \hat{v}_0)$ 对原子类型 $\mathbf{v}_{t-1}$ 进行采样
+::::
+
+<ImageCard
+	image="https://s21.ax1x.com/2025/03/19/pEwmCWT.png"
+	width=85%
+	center=true
+/>
 
 ## TargetDiff 代码
 
@@ -105,12 +133,18 @@ permalink: /projects/targetdiff
 
 主要代码在 `train_diffusion.py`和`molopt_score_model.py`中
 
+:::: steps
 1. 解析命令行 —— 训练的超参数的设置
+
 2. 数据的预处理 —— 数据输入的预处理
 	- 主要是进行数据的映射与反映射
+
 3. 数据集处理 —— 数据加载与划分
+
 4. 初始化模型 —— 调用`molopt_score_model.py`中的模型
+
 5. 训练 —— 关键在 `model.get_diffusion_loss` 函数中
+    :::: steps
 	1. 生成时间步 —— 算法step2
 		```python
 		# sample noise levels
@@ -191,16 +225,24 @@ permalink: /projects/targetdiff
 		loss_v = torch.mean(kl_v)
 		loss = loss_pos + loss_v * self.loss_v_weight
 		```
+	::::	
+::::
 
 ### 采样流程
 
 主要代码在 `sample_diffusion.py`和`molopt_score_model.py`中
 
+:::: steps
 1. 解析命令行 —— 采样的超参数的设置
+
 2. 加载训练好的模型 —— ckpt -> checkpoint
+
 3. 数据的预处理 —— 采用和模型训练时的相同的处理（所有的 config 均来自于选取的模型的训练时的配置）
+
 4. 初始化模型 —— 调用`molopt_score_model.py`中的模型
+
 5. 采样 —— 关键在 `sample_diffusion_ligand` 函数 和 `model.sample_diffusion` 函数中
+	:::: steps
 	1. 确定原子数量 —— 算法step1
 		```python
 		# 步骤一：确定原子数量
@@ -306,6 +348,9 @@ permalink: /projects/targetdiff
 		pos_traj.append(ori_ligand_pos.clone().cpu())
 	    v_traj.append(ligand_v.clone().cpu())
 		```
+	::::
+::::
+
 ### 评估流程
 
 主要在`evaluate_diffusion.py` 和 `evaluate_from_meta.py` 中
@@ -425,27 +470,27 @@ print_ring_ratio([r['chem_results']['ring_size'] for r in results], logger)
 
 ##### Affinity 的计算
 ```python
-	def run(self, mode='dock', exhaustiveness=8, **kwargs):
-		
-	ligand_pdbqt = self.ligand_path[:-4] + '.pdbqt'
-	protein_pqr = self.receptor_path[:-4] + '.pqr'
-	protein_pdbqt = self.receptor_path[:-4] + '.pdbqt'
-	
-	lig = PrepLig(self.ligand_path, 'sdf')
-	lig.get_pdbqt(ligand_pdbqt)
-	
-	prot = PrepProt(self.receptor_path)
-	
-	if not os.path.exists(protein_pqr):
-		prot.addH(protein_pqr)
-		
-	if not os.path.exists(protein_pdbqt):
-		prot.get_pdbqt(protein_pdbqt)
-    
-	dock = VinaDock(ligand_pdbqt, protein_pdbqt)
-	dock.pocket_center, dock.box_size = self.center, [self.size_x, self.size_y, self.size_z]
-	score, pose = dock.dock(score_func='vina', mode=mode, exhaustiveness=exhaustiveness, save_pose=True, **kwargs)
-	return [{'affinity': score, 'pose': pose}]
+def run(self, mode='dock', exhaustiveness=8, **kwargs):
+  		
+  	ligand_pdbqt = self.ligand_path[:-4] + '.pdbqt'
+  	protein_pqr = self.receptor_path[:-4] + '.pqr'
+  	protein_pdbqt = self.receptor_path[:-4] + '.pdbqt'
+  	
+  	lig = PrepLig(self.ligand_path, 'sdf')
+  	lig.get_pdbqt(ligand_pdbqt)
+  	
+  	prot = PrepProt(self.receptor_path)
+  	
+  	if not os.path.exists(protein_pqr):
+  		prot.addH(protein_pqr)
+  		
+  	if not os.path.exists(protein_pdbqt):
+  		prot.get_pdbqt(protein_pdbqt)
+      
+  	dock = VinaDock(ligand_pdbqt, protein_pdbqt)
+  	dock.pocket_center, dock.box_size = self.center, [self.size_x, self.size_y, self.size_z]
+  	score, pose = dock.dock(score_func='vina', mode=mode, exhaustiveness=exhaustiveness, save_pose=True, **kwargs)
+  	return [{'affinity': score, 'pose': pose}]
 ```
 #### Diversity
 

@@ -38,16 +38,12 @@ export default defineUserConfig({
       ]
     }, 
 
+    codeHighlighter: {
+      themes: { light: 'solarized-light', dark: 'solarized-dark'} 
+    },
+    
     plugins: {
-      /**
-       * Shiki 代码高亮
-       * @see https://theme-plume.vuejs.press/config/plugins/code-highlight/
-       */
-      shiki: {
-        languages: ['c','c++','python','bash','ini'],
-        theme: { light: 'solarized-light', dark: 'solarized-dark'}
-      },
-
+        
       /**
        * markdown enhance
        * @see https://theme-plume.vuejs.press/config/plugins/markdown-enhance/
