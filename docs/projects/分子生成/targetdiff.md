@@ -4,7 +4,10 @@ createTime: 2024/12/23 20:29:02
 tags:
   - TargetDiff
   - DDPM
-permalink: /projects/targetdiff
+permalink: /projects/分子生成/targetdiff
+outline: deep
+prev: /projects/分子生成/ipdiff
+next: {}
 ---
 
 ## 项目进度

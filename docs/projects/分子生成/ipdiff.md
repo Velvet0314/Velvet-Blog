@@ -5,7 +5,9 @@ tags:
   - IPDiff
   - IPNet
   - DDPM
-permalink: /projects/ipdiff
+permalink: /projects/分子生成/ipdiff
+prev: {}
+next: /projects/分子生成/targetdiff
 ---
 
 ## 项目进度

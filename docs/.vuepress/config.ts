@@ -41,7 +41,9 @@ export default defineUserConfig({
     codeHighlighter: {
       themes: { light: 'solarized-light', dark: 'solarized-dark'} 
     },
-    
+
+    copyright: 'CC-BY-NC-SA-4.0',
+
     plugins: {
         
       /**

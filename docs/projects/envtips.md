@@ -3,6 +3,9 @@ title: 一些环境配置的 Tips
 createTime: 2025/01/21 15:12:40
 sticky: 5
 permalink: /projects/envtips
+prev: {}
+next: {} 
+
 ---
 
 ## 有关 WSL 的网络代理
