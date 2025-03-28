@@ -12,7 +12,7 @@ config:
     backgroundImage: fixed
     hero:
       name: Velvet-Notes
-      tagline: 一个专注于 ML & DL 的博客
+      tagline: 一个专注于 DL 的博客
       text: 看似寻常最奇崛，成如容易却艰辛
       actions:
         -

@@ -10,7 +10,7 @@
 }
 
 .layout-home .footer-no-border .vp-footer {
-  display: none;
+  display: none !important;
 }
 
 .vp-doc-container {

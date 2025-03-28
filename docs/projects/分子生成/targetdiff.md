@@ -5,7 +5,6 @@ tags:
   - TargetDiff
   - DDPM
 permalink: /projects/分子生成/targetdiff
-outline: deep
 prev: /projects/分子生成/ipdiff
 next: {}
 ---
