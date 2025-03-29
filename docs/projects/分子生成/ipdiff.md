@@ -151,3 +151,136 @@ next: /projects/分子生成/targetdiff
 	width=85%
 	center=true
 />
+
+## IPDiff 代码
+
+### 代码解读：[Velvet0314/IPDiff at 4LearnOnly](https://github.com/Velvet0314/IPDiff/tree/4LearnOnly)
+
+### 环境安装 Tips
+
+- 运行环境同 TargetDiff
+
+### 训练流程
+
+主要代码在 `train.py`和`molopt_score_model.py`中，大致流程与 TargetDiff 相同
+
+训练算法核心在 `molopt_score_model.py` 的函数 `get_diffusion_loss` 中
+
+:::: steps
+1. 新定义了 IPNet 先验知识辅助后的配体和蛋白质
+   ```python
+   hbap_ligand = None
+   hbap_protein = None
+   ```
+2. line 5：从 IPNet 中提取特征 —— 得到了添加了先验知识的蛋白质和配体
+   ```python
+   # line 5
+   hbap_ligand, hbap_protein = net_cond.extract_features(gt_ligand_pos, gt_protein_pos, gt_lig_a_h, gt_protein_a_h, gt_protein_r_h, batch_ligand, batch_protein)
+   ```
+3. line 6：先验知识生成**偏移（shift）**，在原本的扩散公式上加上偏移，得到扰动后的配体位置
+	- 注意网络 $\psi_{\theta2}$
+   ```python
+   # line 6
+   shift_cond_t = torch.cat([hbap_ligand, time_step[batch_ligand].unsqueeze(-1)], -1)
+   # 注意 shift_t_mlp_pos 这个网络 —— ψ_θ_2
+   # shift_t_mlp_pos 是一个全连接网络，输入是 128 维的向量，输出是 3 维的向量
+   # BAPNet 提取的特征(hbap_ligand)是高维的语义特征(128维)
+   # 但分子构象需要的是 3D 空间中的几何指导
+   # 线性层将高维特征压缩映射到具体的 xyz 坐标偏移量
+   shift_cond_t = self.shift_t_mlp_pos(shift_cond_t)
+   # 配体在 t 时刻经过 先验偏移 和 扰动 后的三维坐标位置
+   ligand_pos_perturbed = a_pos.sqrt() * ligand_pos + (1.0 - a_pos).sqrt() * pos_noise + k_t_pos * shift_cond_t
+   ```
+4. line 9：将扩散模型原本的特征与 IPNet 提取的特征进行结合
+   ```python
+   # line 9
+   if hbap_protein is None:
+   	hbap_protein = torch.zeros([h_protein.shape[0], self.cond_dim]).to(h_protein.device)
+   if hbap_ligand is None:
+   	hbap_ligand = torch.zeros([init_ligand_h.shape[0], self.cond_dim]).to(init_ligand_h.device)
+
+   # 将扩散模型原本的特征与 IPNet 提取的特征进行结合
+   h_protein = self.emb_mlp(torch.cat([h_protein, hbap_protein], dim=1))
+   init_ligand_h = self.emb_mlp(torch.cat([init_ligand_h, hbap_ligand], dim=1))
+
+   # 这段代码给蛋白质和配体特征向量添加了节点类型指示器（node indicator）
+   # 目的是明确区分蛋白质原子和配体原子
+   # 节点类型识别：通过添加一个额外的特征维度（蛋白质为0，配体为1），模型可以明确区分两种不同类型的原子
+   if self.config.node_indicator:
+   	h_protein = torch.cat([h_protein, torch.zeros(len(h_protein), 1).to(h_protein)], -1)
+   	init_ligand_h = torch.cat([init_ligand_h, torch.ones(len(init_ligand_h), 1).to(h_protein)], -1)
+
+   h_all, pos_all, batch_all, mask_ligand, _ =compose_context(
+   	h_protein=h_protein,
+   	h_ligand=init_ligand_h,
+   	pos_protein=protein_pos,
+   	pos_ligand=init_ligand_pos,
+   	batch_protein=batch_protein,
+   	batch_ligand=batch_ligand,
+   )
+   ```
+::::
+
+### 采样流程
+
+主要代码在 `sample_split.py`和 `molopt_score_model.py` 中，大致流程与 TargetDiff 相同
+
+采样算法核心在 `molopt_score_model.py` 的函数 `sample_diffusion` 中
+
+:::: steps
+1. line 7：信息嵌入与先验知识结合都在函数 `forward` 中，也就是 line 8 的预测
+
+2. line 8：调用前向传播进行**预测（predict）**
+   ```python
+   # 从 t = T 开始，调用前向传播进行去噪，预测 t-1 时刻的配体3D坐标位置和类型信息
+   # 因为预测，所以要调用 forward
+   # line 8
+   preds = self(
+   	protein_pos=protein_pos,
+   	protein_v=protein_v,
+   	batch_protein=batch_protein,
+   	init_ligand_pos=ligand_pos,
+   	init_ligand_v=ligand_v,
+   	batch_ligand=batch_ligand,
+   	time_step=t,
+   	hbap_protein=hbap_protein,
+   	hbap_ligand=hbap_ligand
+   )
+   ```
+3. line 9：从位移后的后验概率 $p_{\theta_1}(\mathbf{X}_{t-1}^\mathcal{M} \mid \mathbf{X}_t^\mathcal{M}, \mathbf{X}_0^\mathcal{P}, \mathbf{F}_{0|t+1}^\mathcal{M})$ 中采样，得到 $\mathbf{X}_{t-1}^\mathcal{M}$
+   ```python
+   # line 9
+   pos_model_mean = self.q_pos_posterior(x0=pos0_from_e, xt=ligand_pos, t=t, t_minus1=t_minus1, batch=batch_ligand, shift=shift_cond_t, shift_minus1=shift_cond_t_minus1)
+   pos_log_variance = extract(self.posterior_logvar, t, batch_ligand)
+   nonzero_mask = (1 - (t == 0).float())[batch_ligand].unsqueeze(-1)
+
+   ligand_pos_next = pos_model_mean + nonzero_mask * (0.5 * pos_log_variance).exp() * torch.randn_like(ligand_pos)
+   ligand_pos = ligand_pos_next
+
+   gt_protein_pos = protein_pos.detach()
+   gt_protein_v = protein_v.detach()
+   gt_protein_a_h = torch.argmax(gt_protein_v[:, :6], dim=1)
+   gt_protein_r_h = torch.argmax(gt_protein_v[:, 6:26], dim=1)
+   pred_ligand_pos = pos0_from_e.detach()
+   pred_lig_a_h = torch.argmax(v0_from_e.detach(), dim=1)
+   ```
+4. line 11：再调用 IPNet，输入当前去噪后结果 $[[\hat{\mathbf{X}}_{0|t}^\mathcal{M}, \mathbf{X}_0^\mathcal{P}]]$，$[[\hat{\mathbf{V}}_{0|t}^\mathcal{M}, \mathbf{V}_0^\mathcal{P}]]$，得到新的交互特征，更新给下一轮迭代使用
+   ```python
+   # line 11
+   hbap_ligand, hbap_protein = net_cond.extract_features(pred_ligand_pos, gt_protein_pos, pred_lig_a_h, gt_protein_a_h, gt_protein_r_h, batch_ligand, batch_protein)
+   hbap_ligand, hbap_protein = hbap_ligand.detach(), hbap_protein.detach()
+   ```
+::::
+
+### IPNet
+
+详解参见仓库中的 `bapnet.py`
+
+## IPDiff 数学推导
+
+## 一些疑问
+
+1. 什么是 SBDD？
+	基于结构的药物设计 (Structure‐based drug design)
+2. 代码
+3. 数学推导
