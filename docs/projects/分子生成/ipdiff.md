@@ -13,13 +13,14 @@ next: /projects/分子生成/targetdiff
 ## 项目进度
 
 李青阳：IPDiff 论文阅读一遍
+
 1. 训练流程梳理
-2. 
-   
+2. 采样流程梳理
+3. IPNet 网络结构梳理
 
 ## 后期规划
 
-- [ ] IPDiff 的代码阅读和实验
+- [x] IPDiff 的代码阅读和实验
 - [ ] 基础知识总结 —— 笔记整理 + 思维导图绘制
 	- [ ] 扩散模型
 	- [ ] Transformers
