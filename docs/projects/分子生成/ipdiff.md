@@ -10,7 +10,7 @@ prev: {}
 next: /projects/分子生成/targetdiff
 ---
 
-## 项目进度
+## **项目进度**
 
 李青阳：IPDiff 论文阅读一遍
 
@@ -18,15 +18,16 @@ next: /projects/分子生成/targetdiff
 2. 采样流程梳理
 3. IPNet 网络结构梳理
 
-## 后期规划
+## **后期规划**
 
 - [x] IPDiff 的代码阅读和实验
 - [ ] 基础知识总结 —— 笔记整理 + 思维导图绘制
-	- [ ] 扩散模型
+	- [x] 扩散模型
 	- [ ] Transformers
 	- [ ] SE3-等变图神经网络
 	- [ ] 论文的数学证明
-## IPDiff 的创新点
+
+## **IPDiff 的创新点**
 
 1. 在扩散模型的 ==<b>前向扩散</b>=={.note} 和 ==<b>反向去噪</b>=={.note} 两个过程中都明确考虑了<b>口袋配体相互作用</b>
 	- 前向扩散：
@@ -35,11 +36,11 @@ next: /projects/分子生成/targetdiff
 		设计了**先验条件结合（prior-conditioning）**：通过在先前估计的蛋白质-配体相互作用上条件化配体分子的去噪来增强反向过程
 2. IPNet：一个预训练的网络，用于提供上面两点的先验知识
 
-## IPDiff 理论
+## **IPDiff 理论**
 
-### IPDiff 原理简述
+### **IPDiff 原理简述**
 
-### IPDiff 训练算法流程
+### **IPDiff 训练算法流程**
 
 以下用 $\mathcal{M}$ 代表配体分子（molecule），用 $\mathcal{P}$ 代表蛋白质（protein），用 $\mathbf{F}^\mathcal{M}$ 代表配体侧提取的交互特征，用 $\mathbf{F}^\mathcal{P}$ 代表蛋白侧提取的交互特征
 
@@ -103,16 +104,16 @@ next: /projects/分子生成/targetdiff
 	center=true
 />
 
-### IPDiff 采样算法流程
+### **IPDiff 采样算法流程**
 
-#### 输入：
+#### **输入：**
   - 目标蛋白结合位点 $\mathcal{P}$（包括其 ==**所有原子的 3D 坐标**=={.note} 和 ==**原子的类型信息**=={.note}）
   - 训练好的扩散去噪模型 $\phi_{\theta_1}$，网络 $\psi_{\theta_2}$ 和 预训练好的提供交互先验知识的 IPNet
 
-#### 输出：
+#### **输出：**
   - 生成的 3D 配体分子 $\mathcal{M}$，使其能与给定蛋白质口袋 $\mathcal{P}$ 紧密结合
 
-#### 主要步骤：
+#### **主要步骤：**
 :::: steps
 1. 行 1：采样出生成的配体分子中原子的数量 $N_M$
 	- 确定后续采样时需要生成多少个原子坐标和类型信息
@@ -153,15 +154,15 @@ next: /projects/分子生成/targetdiff
 	center=true
 />
 
-## IPDiff 代码
+## **IPDiff 代码**
 
-### 代码解读：[Velvet0314/IPDiff at 4LearnOnly](https://github.com/Velvet0314/IPDiff/tree/4LearnOnly)
+### **代码解读：**[Velvet0314/IPDiff at 4LearnOnly](https://github.com/Velvet0314/IPDiff/tree/4LearnOnly)
 
-### 环境安装 Tips
+### **环境安装 Tips**
 
 - 运行环境同 TargetDiff
 
-### 训练流程
+### **训练流程**
 
 主要代码在 `train.py`和`molopt_score_model.py`中，大致流程与 TargetDiff 相同
 
@@ -222,7 +223,7 @@ next: /projects/分子生成/targetdiff
    ```
 ::::
 
-### 采样流程
+### **采样流程**
 
 主要代码在 `sample_split.py`和 `molopt_score_model.py` 中，大致流程与 TargetDiff 相同
 
@@ -273,13 +274,13 @@ next: /projects/分子生成/targetdiff
    ```
 ::::
 
-### IPNet
+### **IPNet**
 
 详解参见仓库中的 `bapnet.py`
 
-## IPDiff 数学推导
+## **IPDiff 数学推导**
 
-## 一些疑问
+## **一些疑问**
 
 1. 什么是 SBDD？
 	基于结构的药物设计 (Structure‐based drug design)

@@ -1,5 +1,5 @@
 ---
-title: Targetdiff
+title: TargetDiff
 createTime: 2024/12/23 20:29:02
 tags:
   - TargetDiff
@@ -9,7 +9,7 @@ prev: /projects/分子生成/ipdiff
 next: {}
 ---
 
-## 项目进度
+## **项目进度**
 
 李青阳：TargetDiff论文阅读一遍+TargetDiff代码阅读
 1. 训练部分代码 `train_diffusion.py`
@@ -23,20 +23,21 @@ next: {}
 
 潘若溪：Python入门 —— 基础语法学习
 
-## 后期规划
+## **后期规划**
 
 - [x] TargetDiff 代码阅读
 - [x] ⭐进行24ICLR Protein-Ligand Interaction Prior for Binding-aware 3D Molecule Diffusion Models的代码阅读和实验
 
-## TargetDiff 的目的
+## **TargetDiff 的目的**
 
 - 靶标感知分子生成
 - 生成分子的亲和力预测 —— 生成分子的质量评估
 
-## TargetDiff 理论
-### TargetDiff 原理简述
+## **TargetDiff 理论**
 
-#### 生成模型
+### **TargetDiff 原理简述**
+
+#### **生成模型**
 
 - 学习一个分布 distribution —— 如何学习？
 	- 已知一个简单的分布（高斯分布、均匀分布...），从中采样（sample）$z$
@@ -44,18 +45,18 @@ next: {}
 	- 生成样本 $G(z)=y$，$y$ 近似于复杂分布（我们无法从复杂分布中直接采样）
 - 利用学习到的分布，从中采样得到结果
 
-#### DDPM 
+#### **DDPM** 
 
-##### Denoising Diffusion Probabilistic Models 去噪扩散概率模型
+##### **Denoising Diffusion Probabilistic Models 去噪扩散概率模型**
 
-##### 核心思想
+##### **核心思想**
 
 - **前向扩散过程（Forward Diffusion Process）**
 	- 逐步加噪，记录噪声和中间产物，训练网络预测噪声 
 - **反向去噪过程（Reverse Denoising Process）**
 	- 从纯噪声开始，逐步去噪，恢复出想要的目标数据
 
-### TargetDiff 训练算法流程
+### **TargetDiff 训练算法流程**
 
 :::: steps
 1. 输入：蛋白质-配体的结合数据集
@@ -84,7 +85,7 @@ next: {}
 	center=true
 />
 
-### TargetDiff 采样算法流程
+### **TargetDiff 采样算法流程**
 
 :::: steps
 1. 输入：蛋白质结合位点（binding site）$\mathcal{P}$ 与 训练好的模型 $\phi_\theta$
@@ -113,25 +114,25 @@ next: {}
 	center=true
 />
 
-## TargetDiff 代码
+## **TargetDiff 代码**
 
-### 代码解读
+### **代码解读**
 
 [Velvet0314/targetdiff at 4LearnOnly](https://github.com/Velvet0314/targetdiff/tree/4LearnOnly)
 
-### 环境安装 Tips
+### **环境安装 Tips**
 
 - 推荐在 Linux 下进行环境安装（可以用 WSL） —— Vina 需要 Linux 环境
 - 注意 Pytorch, Cuda, Python 的版本对应
 - 需要安装对应版本的 cudatoolkit 实现 Pytorch 中利用 cuda 进行 GPU 的加速
 - 我的环境在 `myenvironment.yaml` 中，可以跑通
 
-### 额外内容
+### **额外内容**
 
 - test_cuda.py 用于测试 cuda 是否启用
 - viewlmdb.py 用于可视化输入数据
 
-### 训练流程
+### **训练流程**
 
 主要代码在 `train_diffusion.py`和`molopt_score_model.py`中
 
@@ -230,7 +231,7 @@ next: {}
 	::::	
 ::::
 
-### 采样流程
+### **采样流程**
 
 主要代码在 `sample_diffusion.py`和`molopt_score_model.py`中
 
@@ -353,7 +354,7 @@ next: {}
 	::::
 ::::
 
-### 评估流程
+### **评估流程**
 
 主要在`evaluate_diffusion.py` 和 `evaluate_from_meta.py` 中
 
@@ -451,7 +452,7 @@ print_ring_ratio([r['chem_results']['ring_size'] for r in results], logger)
 
 主要在 `docking_vina.py`.  和 `docking_qvina.py` 中
 
-##### `docking_mode` 的选择
+##### `docking_mode` **的选择**
 - `evaluation_from_meta.py`
 	`docking_mode` 是默认的 `vina_full` 模式：
 	```python
@@ -470,7 +471,7 @@ print_ring_ratio([r['chem_results']['ring_size'] for r in results], logger)
 	python scripts/evaluate_diffusion.py {OUTPUT_DIR} --docking_mode vina_score --protein_root data/test_set
 	```
 
-##### Affinity 的计算
+##### **Affinity 的计算**
 ```python
 def run(self, mode='dock', exhaustiveness=8, **kwargs):
   		
@@ -494,7 +495,7 @@ def run(self, mode='dock', exhaustiveness=8, **kwargs):
   	score, pose = dock.dock(score_func='vina', mode=mode, exhaustiveness=exhaustiveness, save_pose=True, **kwargs)
   	return [{'affinity': score, 'pose': pose}]
 ```
-#### Diversity
+#### **Diversity**
 
 TargetDiff 中无该部分代码，但是单独给出一个用于计算 Diversity 的标准代码
 
@@ -530,9 +531,9 @@ mean_diversity = np.mean(protein_diversities)
 median_diversity = np.median(protein_diversities)
 ```
 
-## TargetDiff 数学推导
+## **TargetDiff 数学推导**
 
-## 一些疑问
+## **一些疑问**
 
 1. 什么是蛋白质口袋？
 	蛋白质口袋指的是蛋白质表面或内部的**三维结构凹陷区域**，该区域通常是其他分子（如配体、小分子药物或离子）与蛋白质发生结合或相互作用的地方。

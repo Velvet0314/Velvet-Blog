@@ -44,6 +44,10 @@ export default defineUserConfig({
 
     copyright: 'CC-BY-NC-SA-4.0',
 
+    docsRepo: 'Velvet0314/Velvet-Blog',
+    docsBranch: 'master',
+    docsDir: 'docs',
+    
     plugins: {
         
       /**
@@ -96,8 +100,6 @@ export default defineUserConfig({
         reactionsEnabled: true,
         inputPosition: 'top',
         lazyLoading: true,
-        lightTheme: 'light',
-        darkTheme: 'dark'
       },
     },
   }),
