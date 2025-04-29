@@ -21,6 +21,11 @@ export const navbar = defineNavbarConfig([
             link: "https://arxiv.org/",
             icon: "simple-icons:arxiv",
           },
+          {
+            text: "CONNECTED PAPERS",
+            link: "https://www.connectedpapers.com/",
+            icon: "simple-icons:alwaysdata",
+          },
         ],
       },
     ],
