@@ -43,7 +43,7 @@ Transformer 的模型结构如下：
 - 通过多个注意力头并行计算，可以捕捉==不同的依赖模式（多头学习多表征）=={.important}
 
 ==2. **位置编码的全连接前馈网络（Position-wise Fully Connected Feed-Forward Network, FFN）：**=={.note}
-- 对每个位置（Token）单独应用相同的前馈神经网络，==通过两个线性层映射到需要的语义空间中=={.important}
+- 对每个位置（Token）单独应用相同的前馈神经网络，==通过两个线性层映射到需要的语义空间中=={.important}，其中在输入 Embedding 后进行 **位置编码（Positional Encoding）**
 
 ==Encoder 的输入是 **原始序列**=={.important}
 
