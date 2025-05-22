@@ -26,7 +26,7 @@
     "vuepress-theme-plume": "1.0.0-rc.151"
   },
   "dependencies": {
-    "@vuepress/helper": "2.0.0-rc.83",
+    "@vuepress/helper": "2.0.0-rc.105",
     "@vueuse/core": "12.7.0"
   }
 }
