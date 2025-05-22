@@ -1,8 +1,8 @@
-import { defineClientConfig } from "vuepress/client";
 import './styles/index.css'
-import RepoCard from "vuepress-theme-plume/features/RepoCard.vue";
-import { onMounted, createApp } from "vue";
+import RepoCard from 'vuepress-theme-plume/features/RepoCard.vue'
 import Live2D from "./components/Live2D.vue";
+import { onMounted, createApp } from "vue";
+import { defineClientConfig } from "vuepress/client";
 
 export default defineClientConfig({
   enhance({ app }) {
@@ -24,5 +24,5 @@ export default defineClientConfig({
         live2dApp.mount(container);
       }
     });
-  }
+  },
 });

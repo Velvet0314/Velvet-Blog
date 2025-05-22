@@ -21,6 +21,7 @@ export default defineUserConfig({
       __dirname,
       './components/MyBackToTop.vue',
     ),},
+
   theme: plumeTheme({
     // 添加您的部署域名
     hostname: 'https://velvet-notes.org/',

@@ -13,13 +13,13 @@ export const navbar = defineNavbarConfig([
     icon: "material-symbols:lightbulb-2-rounded",
     items: [
       {
-        text: "Paper",
+        text: "Papers",
         icon: "fa-solid:paper-plane",
         items: [
           {
             text: "arXiv.org e-Print archive",
             link: "https://arxiv.org/",
-            icon: "simple-icons:arxiv",
+            icon: "academicons:arxiv",
           },
           {
             text: "CONNECTED PAPERS",
@@ -28,6 +28,17 @@ export const navbar = defineNavbarConfig([
           },
         ],
       },
+      {
+        text: "Insights",
+        icon: "fluent-mdl2:insights",
+        items: [
+          {
+            text: "soarXiv - the universe of science",
+            link: "https://soarxiv.org/",
+            icon: "fluent-emoji-high-contrast:shooting-star",
+          },
+        ]
+      }
     ],
   },
   {
@@ -35,24 +46,18 @@ export const navbar = defineNavbarConfig([
     icon: "material-symbols:book-4-spark-rounded",
     items: [
       { 
-        text: "机器学习",
         items:[
           {
-            text: "Stanford CS229 讲义",
-            link: "/ML/",
-            activeMatch: '^/ML/',
+            text: "备忘录",
+            link: "/Memo/",
+            activeMatch: '^/Memo/',
+            icon: "emojione-monotone:memo"
+          },
+                    {
+            text: "Dive into Deep Learning",
+            link: "/D2L/",
+            activeMatch: '^/D2L/',
             icon: "icon-park-solid:notebook"
-          }
-        ],
-      },
-      { 
-        text: "计算机基础",
-        items:[
-          {
-            text: "浙江大学第2版 数据结构",
-            link: "/DS/",
-            activeMatch: '^/DS/',
-            icon: "bxs:tree"
           }
         ],
       },

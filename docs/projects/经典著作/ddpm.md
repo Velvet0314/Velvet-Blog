@@ -2,7 +2,7 @@
 title: DDPM
 createTime: 2025/04/06 11:20:15
 tags:
-  - DDPM
+  - 扩散模型
 permalink: /projects/经典著作/ddpm
 prev: /projects/经典著作/transformer
 next: {}

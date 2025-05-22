@@ -22,5 +22,22 @@ config:
         -
           theme: alt
           text: Github →
-          link: https://github.com/Velvet0314/Velvet-Blog
+          link: https://github.com/Velvet0314/
 ---
+
+<style>
+[data-theme="light"] {
+  --vp-c-text-hero-name: #243241;
+  --vp-c-text-hero-tagline: #30445a;
+  --vp-c-text-hero-text: #30445a;
+  --vp-button-alt-bg: #d4d4d4;
+}
+
+[data-theme="dark"] {
+  --vp-c-text-hero-tagline: #f7f9ee;
+}
+
+.footer-no-border .vp-footer {
+  display: none;
+}
+</style>

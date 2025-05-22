@@ -2,11 +2,11 @@
 title: IPDiff
 createTime: 2025/03/17 20:19:32
 tags:
-  - IPDiff
-  - IPNet
-  - DDPM
+  - 配体生成
+  - 扩散模型
+  - 先验网络
 permalink: /projects/分子生成/ipdiff
-prev: {}
+prev: /projects/分子生成/pocketgen
 next: /projects/分子生成/targetdiff
 ---
 
