@@ -4,7 +4,7 @@ externalLinkIcon: false
 config:
   -
     type: banner
-    banner: https://s21.ax1x.com/2024/05/07/pkEbw0s.jpg
+    banner: https://image.velvet-notes.org/blog/cover.jpg
     bannerMask:
       light: 0.05
       dark: 0.40

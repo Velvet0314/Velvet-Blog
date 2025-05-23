@@ -3,9 +3,9 @@ title: ResNet
 createTime: 2025/05/13 09:16:44
 tags:
   - ResNet
-permalink: /projects/经典著作/resnet
+permalink: /papers/经典著作/resnet
 prev: {}
-next: /projects/经典著作/transformer
+next: /papers/经典著作/transformer
 ---
 
 ## **ResNet 概述**

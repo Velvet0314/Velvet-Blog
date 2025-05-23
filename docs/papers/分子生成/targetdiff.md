@@ -4,8 +4,8 @@ createTime: 2024/12/23 20:29:02
 tags:
   - 配体生成
   - 扩散模型
-permalink: /projects/分子生成/targetdiff
-prev: /projects/分子生成/ipdiff
+permalink: /papers/分子生成/targetdiff
+prev: /papers/分子生成/ipdiff
 next: {}
 ---
 
@@ -98,7 +98,7 @@ TargetDiff是一种基于三维等变扩散模型的分子生成工具，专注�
 ::::
 
 <ImageCard
-	image="https://s21.ax1x.com/2025/03/19/pEweOyQ.png"
+	image="https://image.velvet-notes.org/blog/train_targetdiff.png"
 	width=85%
 	center=true
 />
@@ -127,7 +127,7 @@ TargetDiff是一种基于三维等变扩散模型的分子生成工具，专注�
 ::::
 
 <ImageCard
-	image="https://s21.ax1x.com/2025/03/19/pEwmCWT.png"
+	image="https://image.velvet-notes.org/blog/sample_targetdiff.png"
 	width=85%
 	center=true
 />

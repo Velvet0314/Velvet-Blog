@@ -33,7 +33,7 @@ export default defineUserConfig({
           username: 'Velvet0314',
           name: 'Velvet',
           alias: ['李青阳'],
-          avatar: 'https://s21.ax1x.com/2024/11/10/pA629aj.jpg',
+          avatar: 'https://image.velvet-notes.org/blog/avatar.png',
           url: 'https://github.com/Velvet0314'
         }
       ]

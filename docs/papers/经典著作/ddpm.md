@@ -3,8 +3,8 @@ title: DDPM
 createTime: 2025/04/06 11:20:15
 tags:
   - 扩散模型
-permalink: /projects/经典著作/ddpm
-prev: /projects/经典著作/transformer
+permalink: /papers/经典著作/ddpm
+prev: /papers/经典著作/transformer
 next: {}
 ---
 
@@ -81,7 +81,7 @@ $$
 **DDPM（Denoising Diffusion Probabilistic Models，后简称扩散模型）** 的工作流程如下图所示：
 
 <ImageCard
-	image="https://s21.ax1x.com/2025/04/06/pEckx4s.png"
+	image="https://image.velvet-notes.org/blog/diffusion_process.png"
 	width=85%
 	center=true
 />
@@ -826,11 +826,11 @@ $$
 
 <CardGrid>
    <ImageCard
-   	image="https://s21.ax1x.com/2025/04/24/pEokVNq.png"
+   	image="https://image.velvet-notes.org/blog/train_diffusion.png"
    	width=100%
    />
    <ImageCard
-	   image="https://s21.ax1x.com/2025/04/24/pEokZ40.png"
+	   image="https://image.velvet-notes.org/blog/sample_diffusion.png"
 	   width=100%
    />
 </CardGrid>

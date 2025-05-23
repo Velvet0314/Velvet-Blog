@@ -5,9 +5,9 @@ tags:
   - 口袋生成
   - pLM
   - Transformer
-permalink: /projects/分子生成/pocketgen
+permalink: /papers/分子生成/pocketgen
 prev: {}
-next: /projects/分子生成/ipdiff
+next: /papers/分子生成/ipdiff
 ---
 
 ## **PocketGen 概述**

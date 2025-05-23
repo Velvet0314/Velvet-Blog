@@ -4,9 +4,9 @@ createTime: 2025/05/08 16:54:34
 tags:
   - Transformer
   - Self-Attention
-permalink: /projects/经典著作/transformer
-prev: {}
-next: /projects/经典著作/ddpm
+permalink: /papers/经典著作/transformer
+prev: /papers/经典著作/resnet
+next: /papers/经典著作/ddpm
 ---
 
 ## **Transformer 概述**
@@ -25,7 +25,7 @@ next: /projects/经典著作/ddpm
 Transformer 的模型结构如下：
 
 <ImageCard
-	image="https://s21.ax1x.com/2025/05/12/pEXgrpq.png"
+	image="https://image.velvet-notes.org/blog/transformer_structure.png"
 	width=65%
 	center=true
 />
@@ -113,7 +113,7 @@ Mask 通过对 $\mathrm{Key}_t \cdots$ 以后的 $\mathrm{Key}$ 取一个非常�
 Transformer 的训练流程如下（with teacher forcing）：
 
 <ImageCard
-	image="https://s21.ax1x.com/2025/05/12/pEXgKTH.png"
+	image="https://image.velvet-notes.org/blog/transformer_process.png"
 	width=60%
 	center=true
 />

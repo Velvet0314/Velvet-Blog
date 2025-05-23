@@ -5,9 +5,9 @@ tags:
   - 配体生成
   - 扩散模型
   - 先验网络
-permalink: /projects/分子生成/ipdiff
-prev: /projects/分子生成/pocketgen
-next: /projects/分子生成/targetdiff
+permalink: /papers/分子生成/ipdiff
+prev: /papers/分子生成/pocketgen
+next: /papers/分子生成/targetdiff
 ---
 
 ## **项目进度**
@@ -99,7 +99,7 @@ next: /projects/分子生成/targetdiff
 - 在 **反向去噪**（行 9）时通过拼接 $[[\widetilde{\mathbf{H}}_t^{\mathcal{M}}, \widetilde{\mathbf{H}}_t^{\mathcal{P}}]], [[\mathbf{F}_0^\mathcal{M}, \mathbf{F}_0^\mathcal{P}]]$（也即 **prior-conditioning**）来告诉去噪网络在每个时刻如何利用蛋白-配体先验信息
 
 <ImageCard
-	image="https://s21.ax1x.com/2025/03/19/pEweBZR.png"
+	image="https://image.velvet-notes.org/blog/train_ipdiff.png"
 	width=85%
 	center=true
 />
@@ -149,7 +149,7 @@ next: /projects/分子生成/targetdiff
 ::::
 
 <ImageCard
-	image="https://s21.ax1x.com/2025/03/19/pEweDd1.png"
+	image="https://image.velvet-notes.org/blog/sample_ipdiff.png"
 	width=85%
 	center=true
 />
