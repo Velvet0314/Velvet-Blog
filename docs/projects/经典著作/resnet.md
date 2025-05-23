@@ -26,7 +26,7 @@ next: /projects/经典著作/transformer
 ResNet 的模型结构如下：
 
 <ImageCard
-	image="https://s21.ax1x.com/2025/05/14/pEjeLp8.png"
+	image="https://image.velvet-notes.org/blog/resnet_structure.png"
 	width=55%
 	center=true
 />
@@ -193,7 +193,7 @@ $$
 #### ==**Tip 3：Bottleneck 结构**=={.note}
 
 <ImageCard
-	image="https://s21.ax1x.com/2025/05/14/pEjMyR0.png"
+	image="https://image.velvet-notes.org/blog/deep_resnet_structure.png"
 	width=70%
 	center=true
 />
