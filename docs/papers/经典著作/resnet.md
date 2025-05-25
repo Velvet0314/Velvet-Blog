@@ -21,7 +21,7 @@ next: /papers/经典著作/transformer
 | **特征信息退化**  | 🚨 层层堆叠会逐步损失原始特征，信息难以穿透深层                   | ✨ Shortcut Connection 直接传递输入，保留原始特征，增强表示能力  |
 | **结构扩展困难**  | 🚨 传统网络越深越难设计，参数量大，计算代价高                    | ✨ 采用模块化设计（基本残差块+瓶颈块），高效扩展至 ResNet-152+      |
 
-### **ResNet 的 Tips**
+## **ResNet 的 Tips**
 
 ResNet 的模型结构如下：
 
@@ -31,7 +31,7 @@ ResNet 的模型结构如下：
 	center=true
 />
 
-#### ==**Tip 1：残差学习框架（Residual Learning）**=={.note}
+### ==**Tip 1：残差学习框架（Residual Learning）**=={.note}
 
 ResNet 将传统网络层的目标从学习完整映射改为残差函数
 
@@ -51,7 +51,7 @@ $$
 
 由于使用残差连接后只是单纯与 $\mathbf{x}$ 进行了连接，没有引入额外的参数或是增大计算复杂度，能够有效节省开销
 
-#### ==**Tip 2：残差连接（Shortcut/Residual Connections）**=={.note}
+### ==**Tip 2：残差连接（Shortcut/Residual Connections）**=={.note}
 
 残差连接在结构图中表示为通过恒等映射的箭头，==将输入 $\mathbf{x}$ 跳过一层或多层，直接加到后面某层的输出上=={.important}
 

@@ -48,7 +48,9 @@ export default defineUserConfig({
     docsRepo: 'Velvet0314/Velvet-Blog',
     docsBranch: 'master',
     docsDir: 'docs',
-    
+    markdown: {
+      annotation: true, 
+    },
     plugins: {
         
       /**

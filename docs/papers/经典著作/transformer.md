@@ -7,6 +7,7 @@ tags:
 permalink: /papers/经典著作/transformer
 prev: /papers/经典著作/resnet
 next: /papers/经典著作/ddpm
+outline: [2,4]
 ---
 
 ## **Transformer 概述**
@@ -20,7 +21,7 @@ next: /papers/经典著作/ddpm
 | **模型结构复杂度** | 🚨 复杂的 RNN 结构堆叠（如 LSTM+Attention）增加了计算和设计难度 | ✨ 采用统一的注意力模块（Self-Attention），简化模型架构 |
 | **全局建模能力**  | 🚨 注意力机制作为辅助模块，受限于 RNN/CNN 框架，无法充分利用全局信息  | ✨ 纯注意力结构全局化信息建模，灵活捕捉各词之间的相互依赖       |
 
-### **Transformer 的 Tips**
+## **Transformer 的 Tips**
 
 Transformer 的模型结构如下：
 
@@ -30,9 +31,9 @@ Transformer 的模型结构如下：
 	center=true
 />
 
-#### ==**Tip 1：编码器-解码器架构堆叠（Encoder and Decoder Stacks）**=={.note}
+### ==**Tip 1：编码器-解码器架构堆叠（Encoder and Decoder Stacks）**=={.note}
 
-##### **Encoder**
+#### **Encoder**
 
 **⭐整体结构：**
 
@@ -59,7 +60,7 @@ $$
 
 **⭐输出维度：** 每一层的输出都保持相同的维度 $d_{model} = 512$，这确保了模型结构的简洁性
 
-##### **Decoder**
+#### **Decoder**
 
 **⭐整体结构：**
 
