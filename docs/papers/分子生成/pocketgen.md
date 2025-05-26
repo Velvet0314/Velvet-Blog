@@ -15,7 +15,7 @@ outline: [2,5]
 
 ### **PocketGen 在干什么**
 
-PocketGen是一种基于深度学习的生成模型，**专注于高效生成与配体分子（如药物小分子）结合的全原子结构蛋白质口袋**。其核心应用场景包括：
+PocketGen是一种基于深度学习的生成模型，**专注于高效**==**生成**=={.danger}**与配体分子（如药物小分子）结合的全原子结构**==**蛋白质口袋**=={.danger}。其核心应用场景包括：
 
 1. 药物发现：设计高亲和力的蛋白质口袋以加速先导化合物筛选，缩短药物研发周期
 
@@ -37,37 +37,37 @@ PocketGen是一种基于深度学习的生成模型，**专注于高效生成与
 
 **⭐核心：**
 
-1. **结构与序列的一致性**
-2. **准确模拟复杂口袋与配体间的相互作用**
+1. ==**结构与序列的一致性**=={.note}
+2. ==**准确模拟复杂口袋与配体间的相互作用**=={.note}
 
 ### **PocketGen 小总结**
 
 :::: steps
-1. PocketGen采用协同设计方式，基于 **配体分子与口袋周围的蛋白质结构** 来预测 **口袋的氨基酸序列与口袋的结构**
+1. PocketGen采用协同设计方式，基于 ==**配体分子与口袋周围的蛋白质结构**=={.important} 来预测 ==**口袋的氨基酸序列与口袋的结构**=={.important}
 
-2. PocketGen不是将每个原子都视为图中的一个独立节点，而是 **将蛋白质-配体复合物表示为由“块 (blocks)”** 组成的几何图。这里的“块”可以理解为比单个原子更高层次的结构单元
+2. PocketGen不是将每个原子都视为图中的一个独立节点，而是 ==**将蛋白质-配体复合物表示为由“块 (blocks)”**=={.important} 组成的几何图。这里的“块”可以理解为比单个原子更高层次的结构单元
 
-   - 对于蛋白质：一个“块”很可能代表一个**氨基酸残基 (residue)**
-   - 对于配体：一个“块”可能代表**整个配体分子**，或者如果配体较大且具有柔性，也可能被划分为几个关键的子结构或药效团作为“块”
+   - 对于蛋白质：一个“块”很可能代表一个 ==**氨基酸残基 (residue)**=={.tip}
+   - 对于配体：一个“块”可能代表 ==**整个配体分子**=={.tip}，或者如果配体较大且具有柔性，也可能被划分为几个关键的子结构或药效团作为“块”
 
 3. 几何图的选择确保了其仅包含连接关系，还包含了这些“块”在三维空间中的坐标信息，使得模型能够理解和处理空间结构
 
 4. 双层注意力机制来捕捉多个粒度的相互作用：
-     - 微观上：原子和残基/配体层面的相互作用
-     - 宏观上：包括蛋白质内和蛋白质-配体相互作用
+     - 细粒度：==**原子和残基/配体层面**=={.tip}的相互作用
+     - 粗粒度：包括 ==**蛋白质内和蛋白质-配体**=={.tip}相互作用
 
-5. 在序列的更新中添加了一个结构适配器，实现结构与序列的对齐。在训练时，冻结其他层权重，只针对适配器进行训练
+5. 在序列的更新中添加了一个 ==**结构适配器**=={.important}，实现结构与序列的对齐。在训练时，冻结其他层权重，只针对适配器进行训练
 ::::
 
 ## **PocketGen 的 Tips**
 
-### **Tip 1：PocketGen 方法概述（Overview of PocketGen）**
+### ==**Tip 1：PocketGen 方法概述（Overview of PocketGen）**=={.note}
 
 **⭐目标：**
 
 **共同设计**蛋白质口袋的残基类型（序列）和三维（3D）结构，使其能够与靶配体分子结合
 
-**PocketGen 将口袋生成形式化为一个条件生成问题**，其目标是学习一个条件生成模型：
+==**PocketGen 将口袋生成形式化为一个条件生成问题**=={.important}，其目标是学习一个条件生成模型：
 
 $$
 P(\mathcal{B} \mid \mathcal{A} \setminus \mathcal{B}, \mathcal{M})
@@ -75,8 +75,8 @@ $$
 
 这表示已知：
 
-- **口袋周围的蛋白质结构**（不包括口袋）：$\mathcal{A} \setminus \mathcal{B}$
-- **配体的3D结构：** $\mathcal{M}$
+- ==**口袋周围的蛋白质结构**（不包括口袋）：$\mathcal{A} \setminus \mathcal{B}$=={.tip}
+- ==**配体的3D结构：** $\mathcal{M}$=={.tip}
 
 去预测口袋区域 $\mathcal{B}$ 的概率分布
 
@@ -87,20 +87,20 @@ $$
 
 #### **1. 蛋白质和配体的基本定义**
 
-- **整个蛋白质的残基序列 $\mathcal{A} = \mathbf{a}_1 \ldots \mathbf{a}_{N_s}$**
+- ==**整个蛋白质的残基序列 $\mathcal{A} = \mathbf{a}_1 \ldots \mathbf{a}_{N_s}$**=={.important}
   由 $N_s$ 个残基组成，其中每个残基 $\mathbf{a}_i$ 是一个氨基酸
 
 - **蛋白质的3D结构表示为点云** $\{ {\mathbf{a}_{i,j}} \}_{1 \leq i \leq {N_s}, 1 \leq j \leq n_i}$
   
-  ${\mathbf{a}_{i,j}}$ 表示残基 $i$ 的第 $j$ 个原子
+  ==${\mathbf{a}_{i,j}}$ 表示残基 $i$ 的第 $j$ 个原子=={.tip}
   
-  每个残基 $\mathbf{a}_i$ 有 $n_i$ 个原子，由残基的类型决定
+  ==每个残基 $\mathbf{a}_i$ 有 $n_i$ 个原子，由残基的类型决定=={.tip}
   
   每个原子的三维坐标为 $x(\mathbf{a}_{i,j}) \in \mathbb{R}^3$
 
 - **前4个原子是主链原子 C$_\alpha$ [+note1], N, C, O，其他是侧链原子**
 
-[+note1]:详见 [备忘录](/notes/Memo/molecule.md) 
+[+note1]:详见 [备忘录：分子生成术语](/notes/Memo/molecule.md) 
 
 #### **2. 配体表示**
 
@@ -111,9 +111,9 @@ $$
 
 #### **3. 蛋白质口袋（pocket）的定义**
 
-- **口袋 $\mathcal{B} = \mathbf{b}_1 \ldots \mathbf{b}_m$** 定义为 **最接近** 配体分子的那些残基
+- **口袋 $\mathcal{B} = \mathbf{b}_1 \ldots \mathbf{b}_m$** 定义为 ==**最接近**=={.danger} 配体分子的那些残基
 
-- 口袋也可由**整个蛋白质的残基序列的一个子序列 $\mathcal{B} = \mathbf{a}_{e_1} \ldots \mathbf{a}_{e_m}$ 来表示**
+- 口袋也可由 ==**整个蛋白质的残基序列的一个子序列 $\mathcal{B} = \mathbf{a}_{e_1} \ldots \mathbf{a}_{e_m}$ 来表示**=={.important}
 
 - **$\mathbf{e} = \{e_1, \ldots, e_m\}$** 表示 **属于口袋的蛋白质残基序列** 的索引集合
 
@@ -136,9 +136,9 @@ $$
 - $\|\cdot\|_2$：L2 范数
 - $\delta = 3.5 \text{Å}$：距离阈值，表示一个残基的任意原子距离配体中任意原子不超过 $3.5 \text{Å}$，就把这个残基认为在口袋中
 
-### **Tip 2：等变双层图Transformer（Equivariant bilevel graph transformer）**
+### ==**Tip 2：等变双层图Transformer（Equivariant bilevel graph transformer）**=={.note}
 
-为了表示的简洁性和计算的便利性，每个 **氨基酸残基（residue）**或 **整个配体分子（ligand）**被视为一个 **块 (block)**。**一个块就是一组原子**
+为了表示的简洁性和计算的便利性，每个 ==**氨基酸残基（residue）**=={.important} 或 ==**整个配体分子（ligand）**=={.important} 被视为一个 ==**块 (block)**=={.important}。**一个块就是一组原子**
 
 #### **符号定义**
 
@@ -146,29 +146,30 @@ $$
 
 **节点** $\upsilon$： 每个节点代表一个块 $i$。每个块 $i$ 包含两部分信息：$\upsilon = \{H_i,X_i \mid 1 \leq i \leq B\}$：
 
-- **原子特征** $H_i \in R^{n_i × d_h}$：一个矩阵，其中 $n_i$ 是块 $i$ 中的原子数量，$d_h$ 是原子特征的维度。$H_i[p]$ 是块 $i$ 中第 $p $ 个原子的可训练特征向量
+- **原子特征** $H_i \in R^{n_i × d_h}$：一个矩阵，==其中 $n_i$ 是块 $i$ 中的原子数量，$d_h$ 是原子特征的维度。$H_i[p]$ 是块 $i$ 中第 $p$ 个原子的可训练特征向量=={.tip}
     
 - **原子坐标** $X_i \in R^{n_i × 3}$： 一个矩阵，$X_i[p]$ 是块 $i$ 中第 $p$ 个原子的三维坐标
     
-- **特征初始化：** $H_i[p]$ 的初始特征由**原子类型嵌入 (atom-type embedding)**、**残基/配体嵌入 (residue/ligand embeddings)** 和**原子位置嵌入 (atom positional embeddings)** 拼接而成
+- **特征初始化：** $H_i[p]$ 的初始特征由 **原子类型嵌入 (atom-type embedding)**、**残基/配体嵌入 (residue/ligand embeddings)** 和 **原子位置嵌入 (atom positional embeddings)** 拼接而成
     
 
 **边** $\varepsilon$：
 
-- 残基块间使用 **k-近邻图 (k-Nearest Neighbors graph, k-NN graph)**
+- 残基块间使用 ==**k-近邻图 (k-Nearest Neighbors graph, k-NN graph)**=={.important}
     
-  对于蛋白质中的**每一个残基块**：
+  对于蛋白质中的 **每一个残基块**：
       
     1. 计算它与其他所有残基块之间的距离（残基与残基之间两两计算距离）
     2. 找出与它距离最近的 $k$ 个其他残基
-    3. 在这个残基与这 $k$ 个最近邻残基之间建立边
+    3. ==**在这个残基与这 $k$ 个最近邻残基之间建立边**=={.tip}
     
-- 残基块与配体块之间建立边    
-- **每个块有一个自环（self-loop）**
+- ==残基块与配体块之间建立边=={.tip}
+
+- ==**每个块有一个自环（self-loop）**=={.tip}
 
 #### **⭐原子级别注意力**
 
-标准 Attention： 
+- 标准 Attention： 
 
 $$
 Q_i = H_iW_Q,\qquad K_J = H_jW_K,\qquad V_j = H_jW_v
@@ -176,7 +177,7 @@ $$
 
 其中 $H_i\in\mathbb{R}^{n_i\times d_h}$ 为第 $i$ 号块内的原子特征矩阵，$W_Q,W_K,W_V$ 为可训练参数
 
-定义 $X_{ij} \in \mathbb{R}^{n_i \times n_j \times 3}$ 为块 $i$ 和 块 $j$ 间的相对坐标，$D_{ij} \in \mathbb{R}^{n_i \times n_j}$ 为块 $i,j$ 间的距离
+- 定义 $X_{ij} \in \mathbb{R}^{n_i \times n_j \times 3}$ 为块 $i$ 和 块 $j$ 间的相对坐标，$D_{ij} \in \mathbb{R}^{n_i \times n_j}$ 为块 $i,j$ 间的距离
 
 记 
 
@@ -184,7 +185,7 @@ $$
 X_{ij}[p,q] = X_i[p] - X_j[q], D_{ij}[p,q] = \|X_{ij}[p,q]\|_2
 $$
 
-原子间的注意力分数矩阵 $R_{ij} \in R^{n_i \times n_j}$ 中每一项： 
+- 原子间的注意力分数矩阵 $R_{ij} \in R^{n_i \times n_j}$ 中每一项： 
 
 $$
 R_{ij}[p,q] = \frac{1}{\sqrt{d_r}}(Q_i[p] ⋅ K_j[q]^T) + \sigma_D(RBF(D_{ij}[p,q]))
@@ -192,9 +193,9 @@ $$
 
 这里 $d_r$ 是 $Q,K,V$向量的维度
 
-$\sigma_D(\mathrm{RBF}(D_{ij}[p,q]))$ 引入了距离偏置，使用 RBF (Radial Basis Functions) 将距离标量嵌入为向量
+- $\sigma_D(\mathrm{RBF}(D_{ij}[p,q]))$ 引入了距离偏置，使用 RBF (Radial Basis Functions) 将距离标量嵌入为向量
 
-原子级注意力权重矩阵 $\alpha_{ij} \in R^{n_i \times n_j}$：
+- 原子级注意力权重矩阵 $\alpha_{ij} \in R^{n_i \times n_j}$：
 
 $$
 \alpha_{ij} = \mathrm{Softmax}(R_{ij})
@@ -206,7 +207,7 @@ $$
 
 #### **⭐残基-配体级别注意力**
 
-块间整体关联性：
+- 块间整体关联性：
 
 $$
 r_{ij} = \frac{\mathbf{1}^TR_{ij}\mathbf{1}}{n_in_j}
@@ -216,7 +217,7 @@ $$
 
 这样就计算了 $R_{ij}$ 中块 $i$ 的每个原子对块 $j$ 中每个原子的注意力分数之和，在除以矩阵中元素数量得到块 $i$ 和块 $j$ 间的原子交互的**平均强度**
 
-计算块 $j$ 对块 $i$ 的块级注意力权重 $\beta_{ij}$：
+- 计算块 $j$ 对块 $i$ 的块级注意力权重 $\beta_{ij}$：
 
 $$
 \beta_{ij} = \frac{\exp(r_{ij})}{\sum_{j\in\mathcal N(i)}\exp(r_{ij})}
@@ -230,7 +231,7 @@ $$
 
 #### **⭐更新公式**
 
-更新公式：
+- 更新公式：
 
 原子 $p$ 在块 $i$ 中从块 $j$ 接收到的消息 $m_{ij,p}$：
 
@@ -289,25 +290,28 @@ $$
 ### **Tip 3：带有结构适配器的序列细化模块（Sequence refinement with pLMs and adapters）**
 
 
-利用微调 pLM 来帮助改进蛋白质口袋序列 —— 通过 adapter 向 pLM 注入先前网络得到的结构信息
+利用微调 pLM 来帮助改进蛋白质口袋序列 —— ==通过 adapter 向 pLM 注入先前网络得到的结构信息=={.important}
 
 同时在训练时也只训练 adapter，冻结其他权重
 
 #### **序列-结构交叉注意力机制（Sequence–structure cross-attention）**
 
-结构特征 $H^{\mathrm{struct}} = \{ h^{\mathrm{struct}}_1,h^{\mathrm{struct}}_2 \cdots h^{\mathrm{struct}}_{N_s}\}$
+- 结构特征 $H^{\mathrm{struct}} = \{ h^{\mathrm{struct}}_1,h^{\mathrm{struct}}_2 \cdots h^{\mathrm{struct}}_{N_s}\}$
 
 第 $i$ 个残基的结构表示：$h^{\mathrm{struct}}_i=\mathrm{mean\ pooling}(H_i)$
 
-序列特征 $H^{\mathrm{seq}} = \{ h^{\mathrm{seq}}_1,h^{\mathrm{seq}}_2 \cdots h^{\mathrm{seq}}_{N_s}\}$
+- 序列特征 $H^{\mathrm{seq}} = \{ h^{\mathrm{seq}}_1,h^{\mathrm{seq}}_2 \cdots h^{\mathrm{seq}}_{N_s}\}$
 
-构建一个经典的 CrossAttention：
+- 构建一个经典的 CrossAttention：
 
 $$
-Q = H^{\mathrm{seq}}W_Q,\qquad K = H^{\mathrm{struct}}W_K, \qquad V = H^{\mathrm{struct}}W_V
+\begin{align*}
+  Q = H^{\mathrm{seq}}W_Q,\qquad K = H^{\mathrm{struct}}W_K, \qquad V = H^{\mathrm{struct}}W_V \\[8pt]
+  \mathrm{CrossAttention}(Q_1, K_2, V_2) = \text{Softmax}\left( \frac{Q_1 K_2^\top}{\sqrt{d_r}} \right) V_2
+\end{align*}
 $$
 
-$\mathrm{CrossAttention}(Q_1, K_2, V_2) = \text{Softmax}\left( \frac{Q_1 K_2^\top}{\sqrt{d_r}} \right) V_2$（这里下标表示来自两个不同的序列）
+这里下标表示来自两个不同的序列
 
 #### **Bottleneck FFN**
 
