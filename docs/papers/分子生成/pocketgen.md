@@ -185,7 +185,7 @@ $$
 X_{ij}[p,q] = X_i[p] - X_j[q], D_{ij}[p,q] = \|X_{ij}[p,q]\|_2
 $$
 
-- 原子间的注意力分数矩阵 $R_{ij} \in R^{n_i \times n_j}$ 中每一项： 
+- ==原子间的注意力分数矩阵 $R_{ij} \in R^{n_i \times n_j}$ 中每一项：=={.important}
 
 $$
 R_{ij}[p,q] = \frac{1}{\sqrt{d_r}}(Q_i[p] ⋅ K_j[q]^T) + \sigma_D(RBF(D_{ij}[p,q]))
@@ -298,7 +298,7 @@ $$
 
 - 结构特征 $H^{\mathrm{struct}} = \{ h^{\mathrm{struct}}_1,h^{\mathrm{struct}}_2 \cdots h^{\mathrm{struct}}_{N_s}\}$
 
-第 $i$ 个残基的结构表示：$h^{\mathrm{struct}}_i=\mathrm{mean\ pooling}(H_i)$
+==第 $i$ 个残基的结构表示：$h^{\mathrm{struct}}_i=\mathrm{mean\ pooling}(H_i)$=={.tip}
 
 - 序列特征 $H^{\mathrm{seq}} = \{ h^{\mathrm{seq}}_1,h^{\mathrm{seq}}_2 \cdots h^{\mathrm{seq}}_{N_s}\}$
 
