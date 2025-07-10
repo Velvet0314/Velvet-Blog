@@ -50,6 +50,7 @@ export default defineUserConfig({
     docsDir: 'docs',
     markdown: {
       annotation: true, 
+      pdf: true,
     },
     plugins: {
         
@@ -57,15 +58,6 @@ export default defineUserConfig({
        * markdown enhance
        * @see https://theme-plume.vuejs.press/config/plugins/markdown-enhance/
        */
-      markdownEnhance: {
-        demo: true,
-      //   include: true,
-      //   chart: true,
-      //   echarts: true,
-      //   mermaid: true,
-      //   flowchart: true,
-      },
-
       /**
        *  markdown power
        * @see https://theme-plume.vuejs.press/config/plugin/markdown-power/

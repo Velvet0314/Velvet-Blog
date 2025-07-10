@@ -6,7 +6,7 @@ tags:
   - pLM
   - Transformer
 permalink: /papers/分子生成/pocketgen
-prev: {}
+prev: /papers/分子生成/frag2seq
 next: /papers/分子生成/ipdiff
 outline: [2,5]
 ---
